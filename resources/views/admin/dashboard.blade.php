@@ -142,15 +142,84 @@
                     start: event.date,
                     className: 'status-' + event.status,
                     extendedProps: {
-                        status: event.status
+                        id: event.id,
+                        status: event.status,
+                        package: event.package,
+                        location: event.location,
+                        phone: event.phone,
+                        eventDate: event.eventDate
                     }
                 };
             }),
             eventClick: function(info) {
-                showInfoModal(
-                    'Booking: ' + info.event.title + '\nStatus: ' + info.event.extendedProps.status,
-                    'Detail Booking'
-                );
+                var props = info.event.extendedProps;
+                var statusBadge = '';
+                if (props.status === 'confirmed') {
+                    statusBadge = '<span class="badge bg-success">Confirmed</span>';
+                } else if (props.status === 'pending') {
+                    statusBadge = '<span class="badge bg-warning">Pending</span>';
+                } else if (props.status === 'cancelled') {
+                    statusBadge = '<span class="badge bg-danger">Cancelled</span>';
+                }
+
+                var modalContent = `
+                    <div class="booking-detail-modal">
+                        <h5 class="mb-3">${info.event.title}</h5>
+                        <table class="table table-sm table-borderless">
+                            <tr>
+                                <td width="40%"><strong>Status</strong></td>
+                                <td>${statusBadge}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tanggal Acara</strong></td>
+                                <td>${props.eventDate}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Paket</strong></td>
+                                <td>${props.package}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lokasi</strong></td>
+                                <td>${props.location}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Telepon</strong></td>
+                                <td>${props.phone}</td>
+                            </tr>
+                        </table>
+                        <div class="mt-3">
+                            <a href="/admin/bookings/${props.id}/edit" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit Booking</a>
+                        </div>
+                    </div>
+                `;
+
+                // Gunakan Bootstrap 5 Modal
+                var modalHtml = `
+                    <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Detail Booking</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ${modalContent}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Hapus modal lama jika ada
+                var oldModal = document.getElementById('bookingModal');
+                if (oldModal) {
+                    oldModal.remove();
+                }
+
+                // Tambahkan modal baru
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                var modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+                modal.show();
             },
             locale: 'id',
             buttonText: {
