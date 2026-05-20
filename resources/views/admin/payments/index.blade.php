@@ -90,26 +90,28 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="alert alert-info">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <strong><i class="fa fa-users mr-1"></i> {{ $booking->bride_name }} & {{ $booking->groom_name }}</strong><br>
-                                    <i class="fa fa-phone mr-1"></i> {{ $booking->phone }}<br>
-                                    <i class="fa fa-gift mr-1"></i> {{ $booking->package ?? '-' }}<br>
-                                    <i class="fa fa-calendar mr-1"></i> {{ $booking->event_date?->format('d M Y') }}
-                                </div>
-                                <div class="col-md-6">
-                                    <i class="fa fa-money mr-1"></i> Nilai Paket: <strong>Rp {{ number_format($booking->package_value, 0, ',', '.') }}</strong><br>
-                                    <i class="fa fa-check-circle mr-1"></i> Terbayar: <strong class="text-success">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</strong><br>
-                                    <i class="fa fa-exclamation-circle mr-1"></i> Sisa: <strong class="text-danger">Rp {{ number_format($booking->remaining_bill, 0, ',', '.') }}</strong><br>
-                                    Status:
-                                    @if($booking->payment_status === 'Lunas')
-                                        <span class="badge badge-success">Lunas</span>
-                                    @elseif($booking->payment_status === 'DP / Cicil')
-                                        <span class="badge badge-warning">DP / Cicil</span>
-                                    @else
-                                        <span class="badge badge-secondary">{{ $booking->payment_status }}</span>
-                                    @endif
+                        <div class="card bg-primary-modern text-white mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong><i class="fa fa-users mr-1"></i> {{ $booking->bride_name }} & {{ $booking->groom_name }}</strong><br>
+                                        <i class="fa fa-phone mr-1"></i> {{ $booking->phone }}<br>
+                                        <i class="fa fa-gift mr-1"></i> {{ $booking->package ?? '-' }}<br>
+                                        <i class="fa fa-calendar mr-1"></i> {{ $booking->event_date?->format('d M Y') }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <i class="fa fa-money mr-1"></i> Nilai Paket: <strong>Rp {{ number_format($booking->package_value, 0, ',', '.') }}</strong><br>
+                                        <i class="fa fa-check-circle mr-1"></i> Terbayar: <strong class="text-white">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</strong><br>
+                                        <i class="fa fa-exclamation-circle mr-1"></i> Sisa: <strong class="text-white">Rp {{ number_format($booking->remaining_bill, 0, ',', '.') }}</strong><br>
+                                        Status:
+                                        @if($booking->payment_status === 'Lunas')
+                                            <span class="badge badge-success">Lunas</span>
+                                        @elseif($booking->payment_status === 'DP / Cicil')
+                                            <span class="badge badge-warning">DP / Cicil</span>
+                                        @else
+                                            <span class="badge badge-secondary">{{ $booking->payment_status }}</span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
