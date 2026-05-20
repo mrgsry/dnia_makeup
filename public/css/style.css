@@ -32,6 +32,46 @@ body {
     line-height: 1.7;
     margin: 0;
     padding: 0;
+    padding-top: 76px;
+}
+
+/* Make sure fixed navbar always stays on top */
+#mainNavbar.navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+/* Transparent at top, solid on scroll + shrink */
+#mainNavbar.navbar.navbar-transparent {
+    background: rgba(255, 255, 255, 0.12);
+    border-bottom-color: rgba(201, 162, 39, 0.10);
+    box-shadow: none;
+}
+
+#mainNavbar.navbar.navbar-scrolled {
+    background: rgba(255, 255, 255, 0.92);
+    border-bottom-color: rgba(201, 162, 39, 0.18);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+#mainNavbar.navbar.navbar-shrink .container {
+    height: 62px;
+}
+
+#mainNavbar.navbar.navbar-shrink .logo-text {
+    font-size: 1.15rem;
+}
+
+#mainNavbar.navbar.navbar-shrink .nav-links {
+    gap: 22px;
+}
+
+@media (max-width: 768px) {
+    body { padding-top: 70px; }
+    #mainNavbar.navbar .container { height: 70px; }
+    #mainNavbar.navbar.navbar-shrink .container { height: 60px; }
 }
 
 .container {
@@ -54,9 +94,10 @@ ul {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 9999;
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(201, 162, 39, 0.18);
     transition: 0.3s ease;
 }
@@ -135,9 +176,13 @@ ul {
     cursor: pointer;
 }
 
+section[id] {
+    scroll-margin-top: 90px;
+}
+
 /* Hero */
 .hero {
-    min-height: 100vh;
+    min-height: calc(100vh - 76px);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -11,18 +11,35 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     });
 });
 
-// Navbar active link based on scroll position
+// Navbar active link based on scroll position + navbar effects
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
+const mainNavbar = document.getElementById('mainNavbar');
 
-window.addEventListener('scroll', () => {
+function updateNavbarOnScroll() {
+    const y = window.scrollY || 0;
+
+    // Effects
+    if (mainNavbar) {
+        if (y <= 10) {
+            mainNavbar.classList.add('navbar-transparent');
+            mainNavbar.classList.remove('navbar-scrolled');
+            mainNavbar.classList.remove('navbar-shrink');
+        } else {
+            mainNavbar.classList.remove('navbar-transparent');
+            mainNavbar.classList.add('navbar-scrolled');
+            if (y > 120) mainNavbar.classList.add('navbar-shrink');
+            else mainNavbar.classList.remove('navbar-shrink');
+        }
+    }
+
+    // Active link
     let currentSection = '';
-
     sections.forEach(section => {
-        const sectionTop = section.offsetTop - 120;
+        const sectionTop = section.offsetTop - 140;
         const sectionHeight = section.offsetHeight;
 
-        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+        if (y >= sectionTop && y < sectionTop + sectionHeight) {
             currentSection = section.getAttribute('id');
         }
     });
@@ -33,7 +50,10 @@ window.addEventListener('scroll', () => {
             link.classList.add('active');
         }
     });
-});
+}
+
+window.addEventListener('scroll', updateNavbarOnScroll);
+window.addEventListener('load', updateNavbarOnScroll);
 
 // Reveal animation on scroll
 const revealElements = document.querySelectorAll('.service-card, .portfolio-item, .testimonial-card, .stat, .contact-item');
