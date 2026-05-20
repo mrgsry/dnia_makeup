@@ -63,6 +63,31 @@
                                         <i class="fa fa-eye"></i> Detail
                                     </button>
                                 @endif
+                                @php
+                                    $phone = preg_replace('/[^0-9]/', '', $booking->phone);
+                                    if (substr($phone, 0, 1) === '0') {
+                                        $phone = '62' . substr($phone, 1);
+                                    }
+                                    $sisaTagihan = number_format($booking->remaining_bill, 0, ',', '.');
+                                    $message = "Halo {$booking->bride_name} & {$booking->groom_name},\n\n";
+                                    $message .= "Kami dari Dnia Organizer ingin mengingatkan mengenai pembayaran untuk paket *{$booking->package}*.\n\n";
+                                    $message .= "📋 Detail Pembayaran:\n";
+                                    $message .= "• Nilai Paket: Rp " . number_format($booking->package_value, 0, ',', '.') . "\n";
+                                    $message .= "• Sudah Dibayar: Rp " . number_format($booking->total_paid, 0, ',', '.') . "\n";
+                                    $message .= "• Sisa Tagihan: Rp {$sisaTagihan}\n\n";
+                                    if ($booking->payment_status === 'Lunas') {
+                                        $message .= "✅ Status: Lunas\n\n";
+                                        $message .= "Terima kasih atas kepercayaan Anda! 🙏";
+                                    } else {
+                                        $message .= "⚠️ Status: Belum Lunas\n\n";
+                                        $message .= "Mohon untuk segera melakukan pembayaran agar acara Anda dapat berjalan lancar.\n\n";
+                                        $message .= "Silakan hubungi kami jika ada pertanyaan. Terima kasih! 🙏";
+                                    }
+                                    $waLink = 'https://wa.me/' . $phone . '?text=' . urlencode($message);
+                                @endphp
+                                <a href="{{ $waLink }}" target="_blank" class="btn btn-success btn-sm mb-1" title="Kirim Pesan WhatsApp">
+                                    <i class="fa fa-whatsapp"></i> Pesan
+                                </a>
                             </td>
                         </tr>
                     @empty
