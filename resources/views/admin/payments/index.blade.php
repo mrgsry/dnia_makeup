@@ -57,63 +57,12 @@
                                     <i class="fa fa-plus"></i> Bayar
                                 </a>
                                 @if($booking->payments->isNotEmpty())
-                                    <button type="button" class="btn btn-outline-primary btn-sm mb-1" data-bs-toggle="collapse" data-bs-target="#payment-{{ $booking->id }}">
-                                        Detail
+                                    <button type="button" class="btn btn-outline-primary btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#paymentModal-{{ $booking->id }}">
+                                        <i class="fa fa-eye"></i> Detail
                                     </button>
                                 @endif
                             </td>
                         </tr>
-                        @if($booking->payments->isNotEmpty())
-                            <tr class="collapse" id="payment-{{ $booking->id }}">
-                                <td colspan="8" class="bg-light">
-                                    <strong>Riwayat Pembayaran:</strong>
-                                    <div class="table-responsive mt-2">
-                                        <table class="table table-sm table-bordered mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th>Ke</th>
-                                                    <th>Label</th>
-                                                    <th>Tanggal</th>
-                                                    <th>Jumlah</th>
-                                                    <th>Metode</th>
-                                                    <th>Catatan</th>
-                                                    <th>Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($booking->payments as $payment)
-                                                    <tr>
-                                                        <td>{{ $payment->payment_number }}</td>
-                                                        <td>
-                                                            @php
-                                                                $isPelunasan = ($booking->package_value > 0) && ($booking->payments->where('payment_number', '<=', $payment->payment_number)->sum('amount') >= $booking->package_value);
-                                                            @endphp
-                                                            @if($isPelunasan)
-                                                                <span class="badge bg-success">Pelunasan</span>
-                                                            @else
-                                                                <span class="badge bg-warning text-dark">DP {{ $payment->payment_number }}</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $payment->payment_date?->format('d M Y') }}</td>
-                                                        <td>Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
-                                                        <td>{{ $payment->payment_method ?? '-' }}</td>
-                                                        <td>{{ $payment->notes ?? '-' }}</td>
-                                                        <td>
-                                                            <a href="{{ route('admin.payments.edit', $payment) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                            <form action="{{ route('admin.payments.destroy', $payment) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus pembayaran ini?')">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button class="btn btn-danger btn-sm">Hapus</button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endif
                     @empty
                         <tr>
                             <td colspan="8" class="text-center text-muted">Belum ada booking.</td>
@@ -124,4 +73,81 @@
         </div>
     </div>
 </div>
+
+@foreach($bookings as $booking)
+    @if($booking->payments->isNotEmpty())
+        <div class="modal fade" id="paymentModal-{{ $booking->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fa fa-credit-card mr-2"></i> Detail Pembayaran
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            <strong>{{ $booking->bride_name }} & {{ $booking->groom_name }}</strong><br>
+                            Paket: {{ $booking->package ?? '-' }}<br>
+                            Tanggal Acara: {{ $booking->event_date?->format('d M Y') }}<br>
+                            Nilai Paket: Rp {{ number_format($booking->package_value, 0, ',', '.') }}<br>
+                            Sudah Dibayar: Rp {{ number_format($booking->total_paid, 0, ',', '.') }}<br>
+                            Sisa Tagihan: <strong>Rp {{ number_format($booking->remaining_bill, 0, ',', '.') }}</strong>
+                        </div>
+
+                        <h6 class="mt-3"><i class="fa fa-list mr-2"></i>Riwayat Pembayaran</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Ke</th>
+                                        <th>Label</th>
+                                        <th>Tanggal</th>
+                                        <th>Jumlah</th>
+                                        <th>Metode</th>
+                                        <th>Catatan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($booking->payments as $payment)
+                                        <tr>
+                                            <td>{{ $payment->payment_number }}</td>
+                                            <td>
+                                                @php
+                                                    $isPelunasan = ($booking->package_value > 0) && ($booking->payments->where('payment_number', '<=', $payment->payment_number)->sum('amount') >= $booking->package_value);
+                                                @endphp
+                                                @if($isPelunasan)
+                                                    <span class="badge bg-success">Pelunasan</span>
+                                                @else
+                                                    <span class="badge bg-warning text-dark">DP {{ $payment->payment_number }}</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $payment->payment_date?->format('d M Y') }}</td>
+                                            <td>Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
+                                            <td>{{ $payment->payment_method ?? '-' }}</td>
+                                            <td>{{ $payment->notes ?? '-' }}</td>
+                                            <td>
+                                                <a href="{{ route('admin.payments.edit', $payment) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                <form action="{{ route('admin.payments.destroy', $payment) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus pembayaran ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-sm">Hapus</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@endforeach
+
 @endsection
