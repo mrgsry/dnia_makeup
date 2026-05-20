@@ -7,7 +7,9 @@
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 @endif
 
@@ -41,15 +43,15 @@
                             <td>{{ $booking->package ?? '-' }}</td>
                             <td>{{ $booking->event_date?->format('d M Y') }}</td>
                             <td>Rp {{ number_format($booking->package_value, 0, ',', '.') }}</td>
-                            <td class="text-success fw-bold">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</td>
-                            <td class="text-danger fw-bold">Rp {{ number_format($booking->remaining_bill, 0, ',', '.') }}</td>
+                            <td class="text-success font-weight-bold">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</td>
+                            <td class="text-danger font-weight-bold">Rp {{ number_format($booking->remaining_bill, 0, ',', '.') }}</td>
                             <td>
                                 @if($booking->payment_status === 'Lunas')
-                                    <span class="badge bg-success">Lunas</span>
+                                    <span class="badge badge-success">Lunas</span>
                                 @elseif($booking->payment_status === 'DP / Cicil')
-                                    <span class="badge bg-warning text-dark">DP / Cicil</span>
+                                    <span class="badge badge-warning">DP / Cicil</span>
                                 @else
-                                    <span class="badge bg-secondary">{{ $booking->payment_status }}</span>
+                                    <span class="badge badge-secondary">{{ $booking->payment_status }}</span>
                                 @endif
                             </td>
                             <td>
@@ -57,7 +59,7 @@
                                     <i class="fa fa-plus"></i> Bayar
                                 </a>
                                 @if($booking->payments->isNotEmpty())
-                                    <button type="button" class="btn btn-outline-primary btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#paymentModal-{{ $booking->id }}">
+                                    <button type="button" class="btn btn-outline-primary btn-sm mb-1" data-toggle="modal" data-target="#paymentModal-{{ $booking->id }}">
                                         <i class="fa fa-eye"></i> Detail
                                     </button>
                                 @endif
@@ -76,29 +78,46 @@
 
 @foreach($bookings as $booking)
     @if($booking->payments->isNotEmpty())
-        <div class="modal fade" id="paymentModal-{{ $booking->id }}" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+        <div class="modal fade" id="paymentModal-{{ $booking->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-primary-modern text-white">
                         <h5 class="modal-title">
                             <i class="fa fa-credit-card mr-2"></i> Detail Pembayaran
                         </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="alert alert-info">
-                            <strong>{{ $booking->bride_name }} & {{ $booking->groom_name }}</strong><br>
-                            Paket: {{ $booking->package ?? '-' }}<br>
-                            Tanggal Acara: {{ $booking->event_date?->format('d M Y') }}<br>
-                            Nilai Paket: Rp {{ number_format($booking->package_value, 0, ',', '.') }}<br>
-                            Sudah Dibayar: Rp {{ number_format($booking->total_paid, 0, ',', '.') }}<br>
-                            Sisa Tagihan: <strong>Rp {{ number_format($booking->remaining_bill, 0, ',', '.') }}</strong>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong><i class="fa fa-users mr-1"></i> {{ $booking->bride_name }} & {{ $booking->groom_name }}</strong><br>
+                                    <i class="fa fa-phone mr-1"></i> {{ $booking->phone }}<br>
+                                    <i class="fa fa-gift mr-1"></i> {{ $booking->package ?? '-' }}<br>
+                                    <i class="fa fa-calendar mr-1"></i> {{ $booking->event_date?->format('d M Y') }}
+                                </div>
+                                <div class="col-md-6">
+                                    <i class="fa fa-money mr-1"></i> Nilai Paket: <strong>Rp {{ number_format($booking->package_value, 0, ',', '.') }}</strong><br>
+                                    <i class="fa fa-check-circle mr-1"></i> Terbayar: <strong class="text-success">Rp {{ number_format($booking->total_paid, 0, ',', '.') }}</strong><br>
+                                    <i class="fa fa-exclamation-circle mr-1"></i> Sisa: <strong class="text-danger">Rp {{ number_format($booking->remaining_bill, 0, ',', '.') }}</strong><br>
+                                    Status:
+                                    @if($booking->payment_status === 'Lunas')
+                                        <span class="badge badge-success">Lunas</span>
+                                    @elseif($booking->payment_status === 'DP / Cicil')
+                                        <span class="badge badge-warning">DP / Cicil</span>
+                                    @else
+                                        <span class="badge badge-secondary">{{ $booking->payment_status }}</span>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
 
                         <h6 class="mt-3"><i class="fa fa-list mr-2"></i>Riwayat Pembayaran</h6>
                         <div class="table-responsive">
-                            <table class="table table-sm table-bordered">
-                                <thead>
+                            <table class="table table-sm table-bordered table-striped">
+                                <thead class="thead-light">
                                     <tr>
                                         <th>Ke</th>
                                         <th>Label</th>
@@ -118,9 +137,9 @@
                                                     $isPelunasan = ($booking->package_value > 0) && ($booking->payments->where('payment_number', '<=', $payment->payment_number)->sum('amount') >= $booking->package_value);
                                                 @endphp
                                                 @if($isPelunasan)
-                                                    <span class="badge bg-success">Pelunasan</span>
+                                                    <span class="badge badge-success">Pelunasan</span>
                                                 @else
-                                                    <span class="badge bg-warning text-dark">DP {{ $payment->payment_number }}</span>
+                                                    <span class="badge badge-warning">DP {{ $payment->payment_number }}</span>
                                                 @endif
                                             </td>
                                             <td>{{ $payment->payment_date?->format('d M Y') }}</td>
@@ -142,7 +161,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                     </div>
                 </div>
             </div>
