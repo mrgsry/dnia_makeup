@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PaymentController extends Controller
 {
@@ -36,12 +37,17 @@ class PaymentController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge([
+            'amount' => preg_replace('/[^0-9]/', '', (string) $request->amount),
+        ]);
+
         $validated = $request->validate([
             'booking_id' => 'required|exists:bookings,id',
             'payment_number' => 'required|integer|min:1',
             'amount' => 'required|numeric|min:0',
             'payment_date' => 'required|date',
-            'payment_method' => 'nullable|string|max:255',
+            'payment_method' => 'nullable|in:QRIS,Transfer,CASH',
+            'payment_proof' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'notes' => 'nullable|string',
         ]);
 
@@ -58,6 +64,10 @@ class PaymentController extends Controller
             return back()->withInput()->withErrors([
                 'amount' => 'Jumlah pembayaran melebihi sisa tagihan (Rp ' . number_format($remaining, 0, ',', '.') . ').',
             ]);
+        }
+
+        if ($request->hasFile('payment_proof')) {
+            $validated['payment_proof'] = $request->file('payment_proof')->store('payment-proofs', 'public');
         }
 
         Payment::create($validated);
@@ -80,12 +90,17 @@ class PaymentController extends Controller
 
     public function update(Request $request, Payment $payment)
     {
+        $request->merge([
+            'amount' => preg_replace('/[^0-9]/', '', (string) $request->amount),
+        ]);
+
         $validated = $request->validate([
             'booking_id' => 'required|exists:bookings,id',
             'payment_number' => 'required|integer|min:1',
             'amount' => 'required|numeric|min:0',
             'payment_date' => 'required|date',
-            'payment_method' => 'nullable|string|max:255',
+            'payment_method' => 'nullable|in:QRIS,Transfer,CASH',
+            'payment_proof' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'notes' => 'nullable|string',
         ]);
 
@@ -108,6 +123,14 @@ class PaymentController extends Controller
             ]);
         }
 
+        if ($request->hasFile('payment_proof')) {
+            if ($payment->payment_proof) {
+                Storage::disk('public')->delete($payment->payment_proof);
+            }
+
+            $validated['payment_proof'] = $request->file('payment_proof')->store('payment-proofs', 'public');
+        }
+
         $payment->update($validated);
 
         return redirect()->route('admin.payments.index')->with('success', 'Pembayaran berhasil diperbarui.');
@@ -115,6 +138,10 @@ class PaymentController extends Controller
 
     public function destroy(Payment $payment)
     {
+        if ($payment->payment_proof) {
+            Storage::disk('public')->delete($payment->payment_proof);
+        }
+
         $payment->delete();
 
         return redirect()->route('admin.payments.index')->with('success', 'Pembayaran berhasil dihapus.');

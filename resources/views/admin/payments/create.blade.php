@@ -9,7 +9,7 @@
         <h3 class="card-title mb-0"><i class="fa fa-plus mr-2"></i> Input Pembayaran</h3>
     </div>
     <div class="card-body">
-        <form action="{{ route('admin.payments.store') }}" method="POST">
+        <form action="{{ route('admin.payments.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-md-6">
@@ -47,8 +47,9 @@
 
                     <div class="mb-3">
                         <label class="form-label">Jumlah Pembayaran</label>
-                        <input type="number" name="amount" class="form-control @error('amount') is-invalid @enderror" value="{{ old('amount') }}" min="0" step="1000" placeholder="Contoh: 1000000" required>
+                        <input type="text" name="amount" id="amount" class="form-control money-input @error('amount') is-invalid @enderror" value="{{ old('amount') }}" placeholder="Contoh: 1.000.000" required>
                         @error('amount')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        <small class="text-muted">Format otomatis dengan pemisah ribuan.</small>
                     </div>
 
                     <div class="mb-3">
@@ -59,8 +60,20 @@
 
                     <div class="mb-3">
                         <label class="form-label">Metode Pembayaran</label>
-                        <input type="text" name="payment_method" class="form-control @error('payment_method') is-invalid @enderror" value="{{ old('payment_method') }}" placeholder="Transfer / Cash / QRIS">
+                        <select name="payment_method" class="form-control @error('payment_method') is-invalid @enderror">
+                            <option value="">-- Pilih Metode --</option>
+                            <option value="QRIS" {{ old('payment_method') == 'QRIS' ? 'selected' : '' }}>QRIS</option>
+                            <option value="Transfer" {{ old('payment_method') == 'Transfer' ? 'selected' : '' }}>Transfer</option>
+                            <option value="CASH" {{ old('payment_method') == 'CASH' ? 'selected' : '' }}>CASH</option>
+                        </select>
                         @error('payment_method')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Bukti Pembayaran (Opsional)</label>
+                        <input type="file" name="payment_proof" class="form-control @error('payment_proof') is-invalid @enderror" accept="image/*" capture="environment">
+                        @error('payment_proof')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        <small class="text-muted">Bisa ambil foto langsung atau pilih dari galeri</small>
                     </div>
 
                     <div class="mb-3">
@@ -79,3 +92,14 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.querySelectorAll('.money-input').forEach(function(input) {
+        input.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            e.target.value = value ? parseInt(value, 10).toLocaleString('id-ID') : '';
+        });
+    });
+</script>
+@endpush

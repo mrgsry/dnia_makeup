@@ -152,6 +152,7 @@
                                         <th>Jumlah</th>
                                         <th>Metode</th>
                                         <th>Catatan</th>
+                                        <th>Bukti</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -173,6 +174,15 @@
                                             <td>Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
                                             <td>{{ $payment->payment_method ?? '-' }}</td>
                                             <td>{{ $payment->notes ?? '-' }}</td>
+                                            <td>
+                                                @if($payment->payment_proof)
+                                                    <a href="{{ asset('storage/' . $payment->payment_proof) }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                        <i class="fa fa-image"></i> Lihat
+                                                    </a>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
                                             <td>
                                                 <a href="{{ route('admin.payments.edit', $payment) }}" class="btn btn-warning btn-sm">Edit</a>
                                                 <form action="{{ route('admin.payments.destroy', $payment) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus pembayaran ini?')">
