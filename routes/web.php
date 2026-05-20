@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\TermController;
@@ -25,6 +26,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('testimonials', TestimonialController::class)->except(['show']);
         Route::resource('terms', TermController::class)->except(['show']);
         Route::resource('packages', PackageController::class)->except(['show']);
+        Route::resource('payments', PaymentController::class)->except(['show']);
         Route::resource('galleries', GalleryController::class)->except(['show']);
         Route::resource('bookings', BookingController::class)->except(['show']);
     });

@@ -273,6 +273,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('admin.payments.index') }}" class="nav-link {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-credit-card"></i>
+                            <p>Pembayaran</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('admin.galleries.index') }}" class="nav-link {{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-image"></i>
                             <p>Galeri</p>
