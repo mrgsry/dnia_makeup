@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Service;
-use App\Models\Testimonial;
 use App\Models\Booking;
 use Carbon\Carbon;
 
@@ -46,13 +44,31 @@ class DashboardController extends Controller
         $endOfWeek = Carbon::now()->addDays(7)->endOfDay();
         $eventsThisWeek = Booking::whereBetween('event_date', [$startOfWeek, $endOfWeek])->count();
 
+        $upcomingInfos = Booking::with('payments')
+            ->whereDate('event_date', '>=', Carbon::today())
+            ->orderBy('event_date', 'asc')
+            ->take(5)
+            ->get()
+            ->map(function ($booking) {
+                return [
+                    'id' => $booking->id,
+                    'couple' => $booking->bride_name . ' & ' . $booking->groom_name,
+                    'event_date' => $booking->event_date,
+                    'h_minus' => Carbon::today()->diffInDays($booking->event_date, false),
+                    'package' => $booking->package ?? '-',
+                    'location' => $booking->location ?? '-',
+                    'total_paid' => $booking->total_paid,
+                    'remaining_bill' => $booking->remaining_bill,
+                    'payment_status' => $booking->payment_status,
+                ];
+            });
+
         return view('admin.dashboard', [
-            'serviceCount' => Service::count(),
-            'testimonialCount' => Testimonial::count(),
             'bookingCount' => Booking::count(),
             'unpaidBookings' => $unpaidBookings,
             'eventsThisWeek' => $eventsThisWeek,
             'calendarEvents' => $calendarEvents,
+            'upcomingInfos' => $upcomingInfos,
         ]);
     }
 }

@@ -57,15 +57,46 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title"><i class="fa fa-line-chart mr-2"></i> Ringkasan Website</h3>
+                <h3 class="card-title"><i class="fa fa-info-circle mr-2"></i> Informasi</h3>
             </div>
             <div class="card-body">
-                <p class="mb-2">Admin panel ini dipakai untuk mengelola konten website public Dnia Organizer.</p>
-                <ul class="mb-0">
-                    <li>Input booking calon pengantin.</li>
-                    <li>Kelola layanan wedding organizer.</li>
-                    <li>Kelola testimoni klien.</li>
-                </ul>
+                @forelse($upcomingInfos as $info)
+                    <div class="border rounded p-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h6 class="mb-1 font-weight-bold">{{ $info['couple'] }}</h6>
+                                <small class="text-muted">{{ $info['event_date']->format('d M Y') }}</small>
+                            </div>
+                            <span class="badge badge-primary px-3 py-2">
+                                H{{ $info['h_minus'] == 0 ? '' : '-' . $info['h_minus'] }}
+                            </span>
+                        </div>
+
+                        <div class="small text-muted mb-2">
+                            <div><strong>Paket:</strong> {{ $info['package'] }}</div>
+                            <div><strong>Lokasi:</strong> {{ $info['location'] }}</div>
+                        </div>
+
+                        <div class="bg-light rounded p-2">
+                            <div class="font-weight-bold mb-1">Pembayaran</div>
+                            <div class="small">
+                                <div>Total Bayar: <strong>Rp {{ number_format($info['total_paid'], 0, ',', '.') }}</strong></div>
+                                <div>Sisa: <strong>Rp {{ number_format($info['remaining_bill'], 0, ',', '.') }}</strong></div>
+                                <div>Status: 
+                                    @if($info['payment_status'] === 'Lunas')
+                                        <span class="badge badge-success">Lunas</span>
+                                    @elseif($info['payment_status'] === 'DP / Cicil')
+                                        <span class="badge badge-warning">DP / Cicil</span>
+                                    @else
+                                        <span class="badge badge-secondary">{{ $info['payment_status'] }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-muted mb-0">Belum ada jadwal acara calon pengantin yang akan datang.</p>
+                @endforelse
             </div>
         </div>
 
