@@ -499,7 +499,87 @@ section {
 }
 
 
-/* Gallery */
+/* Gallery Carousel */
+.gallery-carousel {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.12);
+}
+
+.gallery-carousel .carousel-indicators {
+    bottom: 16px;
+}
+
+.gallery-carousel .carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.5);
+    border: none;
+    margin: 0 6px;
+    transition: 0.3s;
+}
+
+.gallery-carousel .carousel-indicators .active {
+    background-color: var(--gold);
+    width: 14px;
+    height: 14px;
+}
+
+.gallery-carousel .carousel-caption {
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    padding: 16px 20px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.6) 100%);
+    border-radius: 0 0 20px 20px;
+}
+
+.gallery-carousel .carousel-caption h5 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: var(--white);
+    margin-bottom: 6px;
+}
+
+.gallery-carousel .carousel-caption p {
+    color: #eee;
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+.gallery-carousel .carousel-control-prev,
+.gallery-carousel .carousel-control-next {
+    width: 56px;
+    height: 56px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.gallery-carousel .carousel-control-prev:hover,
+.gallery-carousel .carousel-control-next:hover {
+    opacity: 1;
+    background: rgba(0,0,0,0.3);
+}
+
+.gallery-carousel .carousel-control-prev-icon,
+.gallery-carousel .carousel-control-next-icon {
+    width: 28px;
+    height: 28px;
+    background-size: 100% 100%;
+}
+
+.gallery-carousel .carousel-control-prev {
+    left: 12px;
+}
+
+.gallery-carousel .carousel-control-next {
+    right: 12px;
+}
+
+/* Gallery (old grid - kept for reference) */
 .gallery {
     background: var(--white);
 }

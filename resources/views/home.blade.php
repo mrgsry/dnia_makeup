@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
     <!-- Navigation -->
@@ -188,22 +189,40 @@
                 <p class="section-desc">Dokumentasi pilihan dari berbagai acara yang pernah kami tangani.</p>
             </div>
 
-            <div class="gallery-grid">
-                @forelse($galleries as $gallery)
-                    <div class="gallery-item">
-                        <div class="gallery-image" style="background-image: url('{{ asset('storage/' . $gallery->image) }}');">
-                            <div class="gallery-overlay">
-                                <h3>{{ $gallery->title }}</h3>
-                                @if($gallery->description)
-                                    <p>{{ Str::limit($gallery->description, 90) }}</p>
-                                @endif
-                            </div>
-                        </div>
+            @if($galleries->isNotEmpty())
+                <div id="galleryCarousel" class="carousel slide gallery-carousel" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        @foreach($galleries as $gallery)
+                            <button type="button" data-bs-target="#galleryCarousel" data-bs-slide-to="{{ $loop->index }}" class="{{ $loop->first ? 'active' : '' }}" aria-current="{{ $loop->first ? 'true' : 'false' }}" aria-label="Slide {{ $loop->iteration }}"></button>
+                        @endforeach
                     </div>
-                @empty
-                    <p class="text-center">Belum ada galeri tersedia.</p>
-                @endforelse
-            </div>
+
+                    <div class="carousel-inner">
+                        @foreach($galleries as $gallery)
+                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                <img src="{{ asset('storage/' . $gallery->image) }}" class="d-block w-100" alt="{{ $gallery->title }}">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>{{ $gallery->title }}</h5>
+                                    @if($gallery->description)
+                                        <p>{{ Str::limit($gallery->description, 140) }}</p>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            @else
+                <p class="text-center">Belum ada galeri tersedia.</p>
+            @endif
         </div>
     </section>
 
@@ -410,6 +429,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>
