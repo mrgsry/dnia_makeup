@@ -22,6 +22,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
 }
 
 body {
@@ -29,6 +30,8 @@ body {
     color: var(--text-dark);
     background: var(--white);
     line-height: 1.7;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
@@ -264,6 +267,8 @@ ul {
 /* Section Common */
 section {
     padding: 92px 0;
+    scroll-snap-align: start;
+    scroll-margin-top: 76px;
 }
 
 .section-header {
@@ -1502,6 +1507,10 @@ section {
 
 /* Responsive */
 @media (max-width: 900px) {
+    html {
+        scroll-snap-type: y proximity;
+    }
+
     .nav-toggle {
         display: block;
     }
