@@ -290,6 +290,9 @@
     </aside>
 
     <div class="content-wrapper">
+        <!-- Test Modal Button (for debugging) -->
+        <button type="button" class="btn btn-danger btn-sm m-3" data-toggle="modal" data-target="#testModal">Test Modal</button>
+
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -312,6 +315,27 @@
             </div>
         </section>
     </div>
+
+    <!-- Test Modal (for debugging) -->
+    <div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="testModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="testModalLabel">Test Modal Title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    This is a test modal content. If you see this, modals are working!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <footer class="main-footer">
         <strong>&copy; {{ date('Y') }} Dnia Organizer.</strong> Admin Panel.
