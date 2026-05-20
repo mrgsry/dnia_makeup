@@ -1410,27 +1410,83 @@ section {
     align-items: center;
     justify-content: center;
     padding: 20px;
+    overflow-y: auto;
 }
 
 .package-modal-box {
     width: min(560px, 100%);
     background: #fff;
     border-radius: 16px;
-    padding: 26px;
+    padding: 32px 26px;
     position: relative;
     box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.package-modal-box h3 {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    padding-right: 30px;
 }
 
 .package-modal-close {
     position: absolute;
     right: 14px;
-    top: 10px;
+    top: 14px;
     border: none;
     background: transparent;
-    font-size: 30px;
+    font-size: 32px;
     line-height: 1;
     cursor: pointer;
     color: #777;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.package-modal-close:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.package-modal-box .form-group {
+    margin-bottom: 18px;
+}
+
+.package-modal-box .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.package-modal-box .form-group input,
+.package-modal-box .form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.package-modal-box .form-group input:focus,
+.package-modal-box .form-group textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+}
+
+.btn-full {
+    width: 100%;
+    justify-content: center;
 }
 
 .reveal {
@@ -1510,5 +1566,42 @@ section {
     .service-card,
     .term-card {
         padding: 26px 22px;
+    }
+
+    /* Modal responsive untuk mobile */
+    .package-modal-overlay {
+        padding: 10px;
+        align-items: flex-start;
+    }
+
+    .package-modal-box {
+        padding: 24px 18px;
+        border-radius: 12px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        max-height: calc(100vh - 40px);
+    }
+
+    .package-modal-box h3 {
+        font-size: 1.35rem;
+        padding-right: 35px;
+    }
+
+    .package-modal-close {
+        right: 10px;
+        top: 10px;
+        width: 32px;
+        height: 32px;
+        font-size: 28px;
+    }
+
+    .package-modal-box .form-group {
+        margin-bottom: 16px;
+    }
+
+    .package-modal-box .form-group input,
+    .package-modal-box .form-group textarea {
+        padding: 11px 12px;
+        font-size: 0.9rem;
     }
 }
