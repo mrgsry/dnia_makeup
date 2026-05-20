@@ -5,8 +5,8 @@
 
 @section('content')
 <div class="row">
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-gold-custom">
+    <div class="col-lg-4 col-6">
+        <div class="small-box bg-primary-modern">
             <div class="inner">
                 <h3>{{ $bookingCount }}</h3>
                 <p>Booking Acara</p>
@@ -17,8 +17,8 @@
             <a href="{{ route('admin.bookings.index') }}" class="small-box-footer">Kelola <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-info">
+    <div class="col-lg-4 col-6">
+        <div class="small-box bg-success-modern">
             <div class="inner">
                 <h3>{{ $serviceCount }}</h3>
                 <p>Layanan</p>
@@ -29,20 +29,8 @@
             <a href="{{ route('admin.services.index') }}" class="small-box-footer">Kelola <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     </div>
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3>{{ $portfolioCount }}</h3>
-                <p>Portfolio</p>
-            </div>
-            <div class="icon">
-                <i class="fa fa-picture-o"></i>
-            </div>
-            <a href="{{ route('admin.portfolios.index') }}" class="small-box-footer">Kelola <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
-    </div>
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-warning">
+    <div class="col-lg-4 col-6">
+        <div class="small-box bg-info-modern">
             <div class="inner">
                 <h3>{{ $testimonialCount }}</h3>
                 <p>Testimoni</p>
@@ -57,9 +45,9 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div class="card card-gold card-outline">
+        <div class="card">
             <div class="card-header">
-                <h3 class="card-title"><i class="fa fa-calendar mr-1"></i> Kalender Booking Acara</h3>
+                <h3 class="card-title"><i class="fa fa-calendar mr-2"></i> Kalender Booking Acara</h3>
             </div>
             <div class="card-body p-2">
                 <div id="calendar"></div>
@@ -67,29 +55,28 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="card card-gold card-outline">
+        <div class="card">
             <div class="card-header">
-                <h3 class="card-title"><i class="fa fa-line-chart mr-1"></i> Ringkasan Website</h3>
+                <h3 class="card-title"><i class="fa fa-line-chart mr-2"></i> Ringkasan Website</h3>
             </div>
             <div class="card-body">
                 <p class="mb-2">Admin panel ini dipakai untuk mengelola konten website public Dnia Organizer.</p>
                 <ul class="mb-0">
                     <li>Input booking calon pengantin.</li>
                     <li>Kelola layanan wedding organizer.</li>
-                    <li>Upload portfolio acara.</li>
                     <li>Kelola testimoni klien.</li>
                 </ul>
             </div>
         </div>
 
-        <div class="card card-gold card-outline">
+        <div class="card">
             <div class="card-header">
-                <h3 class="card-title"><i class="fa fa-link mr-1"></i> Quick Action</h3>
+                <h3 class="card-title"><i class="fa fa-link mr-2"></i> Quick Action</h3>
             </div>
             <div class="card-body">
-                <a href="{{ route('admin.bookings.create') }}" class="btn btn-gold btn-block mb-2"><i class="fa fa-plus mr-1"></i> Tambah Booking</a>
-                <a href="{{ route('admin.services.create') }}" class="btn btn-outline-secondary btn-block mb-2"><i class="fa fa-plus mr-1"></i> Tambah Layanan</a>
-                <a href="{{ route('admin.portfolios.create') }}" class="btn btn-outline-secondary btn-block"><i class="fa fa-plus mr-1"></i> Tambah Portfolio</a>
+                <a href="{{ route('admin.bookings.create') }}" class="btn btn-primary btn-block mb-2"><i class="fa fa-plus mr-2"></i> Tambah Booking</a>
+                <a href="{{ route('admin.services.create') }}" class="btn btn-outline-primary btn-block mb-2"><i class="fa fa-plus mr-2"></i> Tambah Layanan</a>
+                <a href="{{ route('admin.testimonials.create') }}" class="btn btn-outline-primary btn-block"><i class="fa fa-plus mr-2"></i> Tambah Testimoni</a>
             </div>
         </div>
     </div>

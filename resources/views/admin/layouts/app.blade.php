@@ -5,68 +5,184 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Admin Panel') - Dnia Organizer</title>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayScrollbars@1.13.3/css/OverlayScrollbars.min.css">
 
     <style>
         :root {
-            --dnia-gold: #c9a227;
-            --dnia-dark-gold: #a67c00;
-            --dnia-cream: #faf8f3;
+            --dnia-primary: #4a5568;
+            --dnia-secondary: #2d3748;
+            --dnia-accent: #667eea;
+            --dnia-light: #f7fafc;
+            --dnia-border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        /* Sidebar Modern */
+        .main-sidebar {
+            background: linear-gradient(180deg, var(--dnia-secondary) 0%, var(--dnia-primary) 100%);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
         }
 
         .brand-link {
-            background: linear-gradient(135deg, var(--dnia-gold), var(--dnia-dark-gold));
+            background: rgba(255,255,255,0.1);
             color: #fff !important;
-            font-weight: 700;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 1.2rem 1rem;
         }
 
-        .brand-link .brand-text {
-            font-weight: 700 !important;
+        .brand-link:hover {
+            background: rgba(255,255,255,0.15);
         }
 
-        .main-sidebar {
-            background: #1f1f1f;
+        .sidebar .nav-link {
+            border-radius: 8px;
+            margin: 4px 8px;
+            transition: all 0.3s ease;
         }
 
-        .sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
-        .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
-            background: linear-gradient(135deg, var(--dnia-gold), var(--dnia-dark-gold));
-            color: #fff;
+        .sidebar .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(4px);
         }
 
-        .btn-gold {
-            background: linear-gradient(135deg, var(--dnia-gold), var(--dnia-dark-gold));
-            border: none;
-            color: #fff;
+        .sidebar .nav-link.active {
+            background: var(--dnia-accent) !important;
+            color: #fff !important;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-gold:hover {
-            color: #fff;
-            box-shadow: 0 6px 18px rgba(201, 162, 39, 0.35);
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
         }
 
-        .text-gold {
-            color: var(--dnia-dark-gold) !important;
+        /* Navbar Modern */
+        .main-header {
+            border-bottom: 1px solid var(--dnia-border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        .card-gold.card-outline {
-            border-top: 3px solid var(--dnia-gold);
-        }
-
-        .bg-gold-custom,
-        .small-box.bg-gold-custom {
-            background: linear-gradient(135deg, var(--dnia-gold), var(--dnia-dark-gold));
-            color: #fff;
-        }
-
-        .table td, .table th {
-            vertical-align: middle;
-        }
-
+        /* Content Wrapper */
         .content-wrapper {
-            background: var(--dnia-cream);
+            background: var(--dnia-light);
+        }
+
+        /* Cards Modern */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            background: #fff;
+            border-bottom: 1px solid var(--dnia-border);
+            border-radius: 12px 12px 0 0 !important;
+            font-weight: 600;
+        }
+
+        /* Small Box Modern */
+        .small-box {
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .small-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .small-box .icon {
+            font-size: 60px;
+            opacity: 0.3;
+        }
+
+        .bg-primary-modern {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+
+        .bg-success-modern {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+        }
+
+        .bg-info-modern {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+        }
+
+        .bg-warning-modern {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%) !important;
+        }
+
+        /* Buttons Modern */
+        .btn {
+            border-radius: 8px;
+            padding: 0.5rem 1.2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--dnia-accent);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Table Modern */
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table thead th {
+            background: var(--dnia-accent);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+        }
+
+        .table-hover tbody tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        /* User Panel */
+        .user-panel {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Footer */
+        .main-footer {
+            border-top: 1px solid var(--dnia-border);
+            background: #fff;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            background: transparent;
+            padding: 0;
+        }
+
+        .breadcrumb-item.active {
+            color: var(--dnia-accent);
         }
     </style>
 
