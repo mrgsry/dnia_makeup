@@ -18,27 +18,27 @@
         </div>
     </div>
     <div class="col-lg-4 col-6">
-        <div class="small-box bg-success-modern">
+        <div class="small-box bg-warning-modern">
             <div class="inner">
-                <h3>{{ $serviceCount }}</h3>
-                <p>Layanan</p>
+                <h3>{{ $unpaidBookings }}</h3>
+                <p>Booking Belum Lunas</p>
             </div>
             <div class="icon">
-                <i class="fa fa-heart"></i>
+                <i class="fa fa-exclamation-triangle"></i>
             </div>
-            <a href="{{ route('admin.services.index') }}" class="small-box-footer">Kelola <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('admin.payments.index') }}" class="small-box-footer">Kelola <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <div class="col-lg-4 col-6">
         <div class="small-box bg-info-modern">
             <div class="inner">
-                <h3>{{ $testimonialCount }}</h3>
-                <p>Testimoni</p>
+                <h3>{{ $eventsThisWeek }}</h3>
+                <p>Acara Minggu Ini</p>
             </div>
             <div class="icon">
-                <i class="fa fa-quote-right"></i>
+                <i class="fa fa-calendar"></i>
             </div>
-            <a href="{{ route('admin.testimonials.index') }}" class="small-box-footer">Kelola <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('admin.bookings.index') }}" class="small-box-footer">Lihat <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     </div>
 </div>

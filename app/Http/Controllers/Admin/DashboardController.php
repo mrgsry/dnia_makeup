@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Models\Testimonial;
 use App\Models\Booking;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -30,10 +31,27 @@ class DashboardController extends Controller
             ];
         });
 
+        // Total booking belum lunas
+        $unpaidBookings = Booking::whereHas('payments', function($query) {
+            // Booking yang punya pembayaran tapi belum lunas
+        })->orWhereDoesntHave('payments')->count();
+
+        // Lebih akurat: hitung dari payment_status
+        $unpaidBookings = Booking::get()->filter(function($booking) {
+            return $booking->payment_status !== 'Lunas';
+        })->count();
+
+        // Total acara minggu ini (event_date dalam 7 hari ke depan dari hari ini)
+        $startOfWeek = Carbon::now()->startOfDay();
+        $endOfWeek = Carbon::now()->addDays(7)->endOfDay();
+        $eventsThisWeek = Booking::whereBetween('event_date', [$startOfWeek, $endOfWeek])->count();
+
         return view('admin.dashboard', [
             'serviceCount' => Service::count(),
             'testimonialCount' => Testimonial::count(),
             'bookingCount' => Booking::count(),
+            'unpaidBookings' => $unpaidBookings,
+            'eventsThisWeek' => $eventsThisWeek,
             'calendarEvents' => $calendarEvents,
         ]);
     }
