@@ -72,6 +72,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Ke</th>
+                                                    <th>Label</th>
                                                     <th>Tanggal</th>
                                                     <th>Jumlah</th>
                                                     <th>Metode</th>
@@ -83,6 +84,16 @@
                                                 @foreach($booking->payments as $payment)
                                                     <tr>
                                                         <td>{{ $payment->payment_number }}</td>
+                                                        <td>
+                                                            @php
+                                                                $isPelunasan = ($booking->package_value > 0) && ($booking->payments->where('payment_number', '<=', $payment->payment_number)->sum('amount') >= $booking->package_value);
+                                                            @endphp
+                                                            @if($isPelunasan)
+                                                                <span class="badge bg-success">Pelunasan</span>
+                                                            @else
+                                                                <span class="badge bg-warning text-dark">DP {{ $payment->payment_number }}</span>
+                                                            @endif
+                                                        </td>
                                                         <td>{{ $payment->payment_date?->format('d M Y') }}</td>
                                                         <td>Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
                                                         <td>{{ $payment->payment_method ?? '-' }}</td>

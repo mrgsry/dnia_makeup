@@ -45,6 +45,21 @@ class PaymentController extends Controller
             'notes' => 'nullable|string',
         ]);
 
+        $booking = Booking::with('payments')->findOrFail($validated['booking_id']);
+        $remaining = $booking->remaining_bill;
+
+        if ($booking->package_value <= 0) {
+            return back()->withInput()->withErrors([
+                'amount' => 'Nilai paket pada booking ini belum diisi, jadi pembayaran belum bisa dicatat.',
+            ]);
+        }
+
+        if ((float) $validated['amount'] > (float) $remaining) {
+            return back()->withInput()->withErrors([
+                'amount' => 'Jumlah pembayaran melebihi sisa tagihan (Rp ' . number_format($remaining, 0, ',', '.') . ').',
+            ]);
+        }
+
         Payment::create($validated);
 
         return redirect()->route('admin.payments.index')->with('success', 'Pembayaran berhasil ditambahkan.');
@@ -73,6 +88,25 @@ class PaymentController extends Controller
             'payment_method' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
         ]);
+
+        $booking = Booking::with('payments')->findOrFail($validated['booking_id']);
+
+        if ($booking->package_value <= 0) {
+            return back()->withInput()->withErrors([
+                'amount' => 'Nilai paket pada booking ini belum diisi, jadi pembayaran belum bisa dicatat.',
+            ]);
+        }
+
+        $totalPaidWithoutCurrent = (float) $booking->payments()
+            ->where('id', '!=', $payment->id)
+            ->sum('amount');
+        $remaining = max(0, (float) $booking->package_value - $totalPaidWithoutCurrent);
+
+        if ((float) $validated['amount'] > $remaining) {
+            return back()->withInput()->withErrors([
+                'amount' => 'Jumlah pembayaran melebihi sisa tagihan (Rp ' . number_format($remaining, 0, ',', '.') . ').',
+            ]);
+        }
 
         $payment->update($validated);
 

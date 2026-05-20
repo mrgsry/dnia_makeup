@@ -24,4 +24,23 @@ class Payment extends Model
     {
         return $this->belongsTo(Booking::class);
     }
+
+    public function getPaymentLabelAttribute()
+    {
+        $booking = $this->relationLoaded('booking') ? $this->booking : $this->booking()->with('payments')->first();
+
+        if (!$booking) {
+            return 'DP ' . $this->payment_number;
+        }
+
+        $totalPaidUntilThis = $booking->payments
+            ->where('payment_number', '<=', $this->payment_number)
+            ->sum('amount');
+
+        if ($booking->package_value > 0 && $totalPaidUntilThis >= $booking->package_value) {
+            return 'Pelunasan';
+        }
+
+        return 'DP ' . $this->payment_number;
+    }
 }
