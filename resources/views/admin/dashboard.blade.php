@@ -9,36 +9,40 @@
         <div class="small-box bg-primary-modern">
             <div class="inner">
                 <h3>{{ $bookingCount }}</h3>
-                <p>Booking Acara</p>
+                <p class="mb-0">Booking Acara</p>
             </div>
             <div class="icon">
                 <i class="fa fa-calendar-check-o"></i>
             </div>
-            <a href="{{ route('admin.bookings.index') }}" class="small-box-footer">Kelola <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('admin.bookings.index') }}" class="small-box-footer text-primary text-decoration-none"
+                style="background: rgba(145, 70, 255, 0.05);">Kelola <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <div class="col-lg-4 col-6">
         <div class="small-box bg-warning-modern">
             <div class="inner">
                 <h3>{{ $unpaidBookings }}</h3>
-                <p>Booking Belum Lunas</p>
+                <p class="mb-0">Booking Belum Lunas</p>
             </div>
             <div class="icon">
                 <i class="fa fa-exclamation-triangle"></i>
             </div>
-            <a href="{{ route('admin.payments.index') }}" class="small-box-footer">Kelola <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('admin.payments.index') }}" class="small-box-footer text-warning text-decoration-none"
+                style="background: rgba(255, 202, 40, 0.05);">Kelola <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <div class="col-lg-4 col-6">
         <div class="small-box bg-info-modern">
             <div class="inner">
                 <h3>{{ $eventsThisWeek }}</h3>
-                <p>Acara Minggu Ini</p>
+                <p class="mb-0">Acara Minggu Ini</p>
             </div>
             <div class="icon">
                 <i class="fa fa-calendar"></i>
             </div>
-            <a href="{{ route('admin.bookings.index') }}" class="small-box-footer">Lihat <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('admin.bookings.index') }}" class="small-box-footer text-info text-decoration-none"
+                style="background: rgba(23, 162, 184, 0.05);">Lihat
+                <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     </div>
 </div>
@@ -61,41 +65,59 @@
             </div>
             <div class="card-body">
                 @forelse($upcomingInfos as $info)
-                    <div class="border rounded p-3 mb-3">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <div>
-                                <h6 class="mb-1 font-weight-bold">{{ $info['couple'] }}</h6>
-                                <small class="text-muted">{{ $info['event_date']->format('d M Y') }}</small>
-                            </div>
-                            <span class="badge badge-primary px-3 py-2">
-                                H{{ $info['h_minus'] == 0 ? '' : '-' . $info['h_minus'] }}
-                            </span>
+                <div class="border rounded p-3 mb-3" style="border-color: var(--brand-border, #DEE2E6);">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <h6 class="mb-1 font-weight-bold" style="color: var(--brand-text-primary, #212529);">
+                                {{ $info['couple'] }}</h6>
+                            <small class="text-muted"
+                                style="color: var(--brand-text-secondary, #6C757D);">{{ $info['event_date']->format('d M Y') }}</small>
                         </div>
+                        <span class="badge badge-primary px-3 py-2"
+                            style="background-color: var(--brand-primary, #9146FF); color: white;">
+                            H{{ $info['h_minus'] == 0 ? '' : '-' . $info['h_minus'] }}
+                        </span>
+                    </div>
 
-                        <div class="small text-muted mb-2">
-                            <div><strong>Paket:</strong> {{ $info['package'] }}</div>
-                            <div><strong>Lokasi:</strong> {{ $info['location'] }}</div>
+                    <div class="small mb-2">
+                        <div style="color: var(--brand-text-secondary, #6C757D);"><strong
+                                style="color: var(--brand-text-primary, #212529);">Paket:</strong>
+                            {{ $info['package'] }}</div>
+                        <div style="color: var(--brand-text-secondary, #6C757D);"><strong
+                                style="color: var(--brand-text-primary, #212529);">Lokasi:</strong>
+                            {{ $info['location'] }}</div>
+                    </div>
+
+                    <div class="rounded p-2"
+                        style="background-color: var(--brand-surface, #F8F9FA); border: 1px solid var(--brand-border, #DEE2E6);">
+                        <div class="font-weight-bold mb-1" style="color: var(--brand-text-primary, #212529);">Pembayaran
                         </div>
-
-                        <div class="bg-light rounded p-2">
-                            <div class="font-weight-bold mb-1">Pembayaran</div>
-                            <div class="small">
-                                <div>Total Bayar: <strong>Rp {{ number_format($info['total_paid'], 0, ',', '.') }}</strong></div>
-                                <div>Sisa: <strong>Rp {{ number_format($info['remaining_bill'], 0, ',', '.') }}</strong></div>
-                                <div>Status: 
-                                    @if($info['payment_status'] === 'Lunas')
-                                        <span class="badge badge-success">Lunas</span>
-                                    @elseif($info['payment_status'] === 'DP / Cicil')
-                                        <span class="badge badge-warning">DP / Cicil</span>
-                                    @else
-                                        <span class="badge badge-secondary">{{ $info['payment_status'] }}</span>
-                                    @endif
-                                </div>
+                        <div class="small">
+                            <div style="color: var(--brand-text-secondary, #6C757D);">Total Bayar: <strong
+                                    style="color: var(--brand-text-primary, #212529);">Rp
+                                    {{ number_format($info['total_paid'], 0, ',', '.') }}</strong></div>
+                            <div style="color: var(--brand-text-secondary, #6C757D);">Sisa: <strong
+                                    style="color: var(--brand-text-primary, #212529);">Rp
+                                    {{ number_format($info['remaining_bill'], 0, ',', '.') }}</strong></div>
+                            <div style="color: var(--brand-text-secondary, #6C757D);">Status:
+                                @if($info['payment_status'] === 'Lunas')
+                                <span class="badge badge-success"
+                                    style="background-color: var(--brand-success, #00C853);">Lunas</span>
+                                @elseif($info['payment_status'] === 'DP / Cicil')
+                                <span class="badge badge-warning"
+                                    style="background-color: var(--brand-warning, #FFCA28); color: #000;">DP /
+                                    Cicil</span>
+                                @else
+                                <span class="badge badge-secondary"
+                                    style="background-color: var(--brand-text-secondary, #6C757D); color: white;">{{ $info['payment_status'] }}</span>
+                                @endif
                             </div>
                         </div>
                     </div>
+                </div>
                 @empty
-                    <p class="text-muted mb-0">Belum ada jadwal acara calon pengantin yang akan datang.</p>
+                <p class="text-muted mb-0" style="color: var(--brand-text-secondary, #6C757D);">Belum ada jadwal acara
+                    calon pengantin yang akan datang.</p>
                 @endforelse
             </div>
         </div>
@@ -105,9 +127,12 @@
                 <h3 class="card-title"><i class="fa fa-link mr-2"></i> Quick Action</h3>
             </div>
             <div class="card-body">
-                <a href="{{ route('admin.bookings.create') }}" class="btn btn-primary btn-block mb-2"><i class="fa fa-plus mr-2"></i> Tambah Booking</a>
-                <a href="{{ route('admin.services.create') }}" class="btn btn-outline-primary btn-block mb-2"><i class="fa fa-plus mr-2"></i> Tambah Layanan</a>
-                <a href="{{ route('admin.testimonials.create') }}" class="btn btn-outline-primary btn-block"><i class="fa fa-plus mr-2"></i> Tambah Testimoni</a>
+                <a href="{{ route('admin.bookings.create') }}" class="btn btn-primary mb-2 d-block"><i
+                        class="fa fa-plus mr-2"></i> Tambah Booking</a>
+                <a href="{{ route('admin.services.create') }}" class="btn btn-outline-primary mb-2 d-block"><i
+                        class="fa fa-plus mr-2"></i> Tambah Layanan</a>
+                <a href="{{ route('admin.testimonials.create') }}" class="btn btn-outline-primary d-block"><i
+                        class="fa fa-plus mr-2"></i> Tambah Testimoni</a>
             </div>
         </div>
     </div>
@@ -117,83 +142,91 @@
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.css">
 <style>
-    #calendar {
-        max-width: 100%;
-        margin: 0 auto;
-        font-size: 0.85em; /* perkecil ukuran teks */
-    }
-    .fc .fc-toolbar {
-        font-size: 0.9em;
-    }
-    .fc .fc-button {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.85em;
-    }
-    .fc .fc-dom-1 {
-        font-size: 1.1em;
-    }
-    .fc-event {
-        cursor: pointer;
-        padding: 1px 4px;
-        font-size: 0.85em;
-    }
-    .fc-event.status-pending {
-        background-color: #ffc107 !important;
-        border-color: #ffc107 !important;
-    }
-    .fc-event.status-confirmed {
-        background-color: #28a745 !important;
-        border-color: #28a745 !important;
-    }
-    .fc-event.status-cancelled {
-        background-color: #dc3545 !important;
-        border-color: #dc3545 !important;
-    }
+#calendar {
+    max-width: 100%;
+    margin: 0 auto;
+    font-size: 0.85em;
+    /* perkecil ukuran teks */
+}
+
+.fc .fc-toolbar {
+    font-size: 0.9em;
+}
+
+.fc .fc-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85em;
+}
+
+.fc .fc-dom-1 {
+    font-size: 1.1em;
+}
+
+.fc-event {
+    cursor: pointer;
+    padding: 1px 4px;
+    font-size: 0.85em;
+}
+
+.fc-event.status-pending {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+}
+
+.fc-event.status-confirmed {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+
+.fc-event.status-cancelled {
+    background-color: var(--brand-error, #EB0400) !important;
+    border-color: var(--brand-error, #EB0400) !important;
+}
 </style>
 @endpush
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var events = @json($calendarEvents);
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var events = @json($calendarEvents);
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            height: 450, // set maximum height agar tidak terlalu besar
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,dayGridWeek'
-            },
-            events: events.map(function(event) {
-                return {
-                    title: event.title,
-                    start: event.date,
-                    className: 'status-' + event.status,
-                    extendedProps: {
-                        id: event.id,
-                        status: event.status,
-                        package: event.package,
-                        location: event.location,
-                        phone: event.phone,
-                        eventDate: event.eventDate
-                    }
-                };
-            }),
-            eventClick: function(info) {
-                var props = info.event.extendedProps;
-                var statusBadge = '';
-                if (props.status === 'confirmed') {
-                    statusBadge = '<span class="badge bg-success">Confirmed</span>';
-                } else if (props.status === 'pending') {
-                    statusBadge = '<span class="badge bg-warning">Pending</span>';
-                } else if (props.status === 'cancelled') {
-                    statusBadge = '<span class="badge bg-danger">Cancelled</span>';
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 450, // set maximum height agar tidak terlalu besar
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,dayGridWeek'
+        },
+        events: events.map(function(event) {
+            return {
+                title: event.title,
+                start: event.date,
+                className: 'status-' + event.status,
+                extendedProps: {
+                    id: event.id,
+                    status: event.status,
+                    package: event.package,
+                    location: event.location,
+                    phone: event.phone,
+                    eventDate: event.eventDate
                 }
+            };
+        }),
+        eventClick: function(info) {
+            var props = info.event.extendedProps;
+            var statusBadge = '';
+            if (props.status === 'confirmed') {
+                statusBadge = '<span class="badge bg-success">Confirmed</span>';
+            } else if (props.status === 'pending') {
+                statusBadge = '<span class="badge bg-warning">Pending</span>';
+            } else if (props.status === 'cancelled') {
+                statusBadge = '<span class="badge bg-danger">Cancelled</span>';
+            }
 
-                var modalContent = `
+            var modalContent = `
                     <div class="booking-detail-modal">
                         <h5 class="mb-3">${info.event.title}</h5>
                         <table class="table table-sm table-borderless">
@@ -224,8 +257,8 @@
                     </div>
                 `;
 
-                // Gunakan Bootstrap 5 Modal
-                var modalHtml = `
+            // Gunakan Bootstrap 5 Modal
+            var modalHtml = `
                     <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -241,26 +274,26 @@
                     </div>
                 `;
 
-                // Hapus modal lama jika ada
-                var oldModal = document.getElementById('bookingModal');
-                if (oldModal) {
-                    oldModal.remove();
-                }
-
-                // Tambahkan modal baru
-                document.body.insertAdjacentHTML('beforeend', modalHtml);
-                var modal = new bootstrap.Modal(document.getElementById('bookingModal'));
-                modal.show();
-            },
-            locale: 'id',
-            buttonText: {
-                today: 'Hari Ini',
-                month: 'Bulan',
-                week: 'Minggu'
+            // Hapus modal lama jika ada
+            var oldModal = document.getElementById('bookingModal');
+            if (oldModal) {
+                oldModal.remove();
             }
-        });
 
-        calendar.render();
+            // Tambahkan modal baru
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            var modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+            modal.show();
+        },
+        locale: 'id',
+        buttonText: {
+            today: 'Hari Ini',
+            month: 'Bulan',
+            week: 'Minggu'
+        }
     });
+
+    calendar.render();
+});
 </script>
 @endpush

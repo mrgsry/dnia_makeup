@@ -1,404 +1,566 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Admin Panel') - Dnia Organizer</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayScrollbars@1.13.3/css/OverlayScrollbars.min.css">
 
+    @vite(['resources/css/app.css'])
+
     <style>
-        :root {
-            --dnia-primary: #4a5568;
-            --dnia-secondary: #2d3748;
-            --dnia-accent: #667eea;
-            --dnia-light: #f7fafc;
-            --dnia-border: #e2e8f0;
-        }
+    :root {
+        --brand-primary: #9146FF;
+        --brand-primary-hover: #A970FF;
+        --brand-secondary: #BF94FF;
+        --brand-neutral: #ADADB8;
+        --brand-bg: #FFFFFF;
+        --brand-surface: #F8F9FA;
+        --brand-surface-alt: #E9ECEF;
+        --brand-surface-modal: #FFFFFF;
+        --brand-text-primary: #212529;
+        --brand-text-secondary: #6C757D;
+        --brand-border: #DEE2E6;
+        --brand-success: #00C853;
+        --brand-warning: #FFCA28;
+        --brand-error: #EB0400;
+    }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--brand-bg);
+        color: var(--brand-text-primary);
+        font-size: 13px;
+    }
 
-        /* Sidebar Modern */
-        .main-sidebar {
-            background: linear-gradient(180deg, var(--dnia-secondary) 0%, var(--dnia-primary) 100%);
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-weight: 700;
+        color: var(--brand-text-primary);
+    }
 
-        .brand-link {
-            background: rgba(255,255,255,0.1);
-            color: #fff !important;
-            font-weight: 600;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 1.2rem 1rem;
-        }
+    /* Sidebar Redesign */
+    .main-sidebar {
+        background-color: #FFFFFF !important;
+        border-right: 1px solid var(--brand-border);
+        box-shadow: none !important;
+    }
 
-        .brand-link:hover {
-            background: rgba(255,255,255,0.15);
-        }
+    .brand-link {
+        background-color: #FFFFFF !important;
+        color: var(--brand-text-primary) !important;
+        font-weight: 700;
+        border-bottom: 1px solid var(--brand-border) !important;
+        padding: 13px 16px !important;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .sidebar .nav-link {
-            border-radius: 8px;
-            margin: 4px 8px;
-            transition: all 0.3s ease;
-        }
+    .sidebar .nav-link {
+        border-radius: 4px;
+        margin: 2px 8px;
+        color: var(--brand-text-primary) !important;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 8px 12px;
+        transition: all 0.1s ease;
+    }
 
-        .sidebar .nav-link:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateX(4px);
-        }
+    .sidebar .nav-link:hover {
+        background-color: var(--brand-surface) !important;
+    }
 
-        .sidebar .nav-link.active {
-            background: var(--dnia-accent) !important;
-            color: #fff !important;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
+    .sidebar .nav-link.active {
+        background-color: rgba(145, 70, 255, 0.1) !important;
+        color: var(--brand-primary) !important;
+        border-left: 2px solid var(--brand-primary);
+        border-radius: 0;
+        box-shadow: none !important;
+    }
 
-        .sidebar .nav-link i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
+    .sidebar .nav-link i {
+        color: inherit !important;
+        margin-right: 12px;
+    }
 
-        /* Navbar Modern */
-        .main-header {
-            border-bottom: 1px solid var(--dnia-border);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
+    /* Navbar Redesign */
+    .main-header {
+        background-color: #FFFFFF !important;
+        border-bottom: 1px solid var(--brand-border) !important;
+        height: 50px;
+        padding: 0 16px;
+    }
 
-        /* Content Wrapper */
-        .content-wrapper {
-            background: var(--dnia-light);
-        }
+    .main-header .nav-link {
+        color: var(--brand-text-primary) !important;
+        font-weight: 600;
+    }
 
-        /* Cards Modern */
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
+    .main-header .nav-link:hover {
+        color: var(--brand-primary) !important;
+    }
 
-        .card:hover {
-            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-            transform: translateY(-2px);
-        }
+    /* Content Wrapper */
+    .content-wrapper {
+        background-color: var(--brand-bg) !important;
+    }
 
-        .card-header {
-            background: #fff;
-            border-bottom: 1px solid var(--dnia-border);
-            border-radius: 12px 12px 0 0 !important;
-            font-weight: 600;
-        }
+    .content-header h1 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+    }
 
-        /* Small Box Modern */
-        .small-box {
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
+    /* Cards Redesign */
+    .card {
+        background-color: #FFFFFF !important;
+        border: 1px solid var(--brand-border) !important;
+        border-radius: 6px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        margin-bottom: 24px;
+    }
 
-        .small-box:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
+    .card:hover {
+        box-shadow: 0 4px 6px rgba(145, 70, 255, 0.1) !important;
+        border-color: var(--brand-primary) !important;
+        transform: none !important;
+    }
 
-        .small-box .icon {
-            font-size: 60px;
-            opacity: 0.3;
-        }
+    .card-header {
+        background-color: transparent !important;
+        border-bottom: 1px solid var(--brand-border) !important;
+        padding: 12px 16px !important;
+        font-weight: 700;
+        color: var(--brand-text-primary) !important;
+    }
 
-        .bg-primary-modern {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        }
+    /* Small Box Redesign (Dashboard Widgets) */
+    .small-box {
+        background-color: #FFFFFF !important;
+        border: 1px solid var(--brand-border);
+        border-radius: 6px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        color: var(--brand-text-primary) !important;
+    }
 
-        .bg-success-modern {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
-        }
+    .small-box:hover {
+        transform: none !important;
+        box-shadow: 0 4px 6px rgba(145, 70, 255, 0.1) !important;
+        border-color: var(--brand-primary) !important;
+    }
 
-        .bg-info-modern {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
-        }
+    .small-box .inner p {
+        color: var(--brand-text-secondary);
+        font-weight: 600;
+    }
 
-        .bg-warning-modern {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%) !important;
-        }
+    .small-box .icon {
+        color: var(--brand-primary) !important;
+        opacity: 0.15 !important;
+    }
 
-        /* Buttons Modern */
-        .btn {
-            border-radius: 8px;
-            padding: 0.5rem 1.2rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
+    .bg-primary-modern,
+    .bg-success-modern,
+    .bg-info-modern,
+    .bg-warning-modern {
+        background: #FFFFFF !important;
+    }
 
-        .btn-primary {
-            background: var(--dnia-accent);
-            border: none;
-        }
+    /* Buttons Redesign */
+    .btn {
+        border-radius: 4px !important;
+        font-weight: 600 !important;
+        font-size: 13px !important;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        transition: all 0.1s ease !important;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px !important;
+    }
 
-        .btn-primary:hover {
-            background: #5a67d8;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-            transform: translateY(-2px);
-        }
+    .btn-primary {
+        background-color: var(--brand-primary) !important;
+        border: none !important;
+        color: #fff !important;
+    }
 
-        /* Table Modern */
-        .table {
-            border-radius: 8px;
-            overflow: hidden;
-        }
+    .btn-primary:hover {
+        background-color: var(--brand-primary-hover) !important;
+        transform: none !important;
+        box-shadow: 0 2px 4px rgba(145, 70, 255, 0.2) !important;
+    }
 
-        .table thead th {
-            background: var(--dnia-accent);
-            color: #fff;
-            font-weight: 600;
-            border: none;
-        }
+    .btn-outline-primary {
+        border: 1px solid var(--brand-primary) !important;
+        color: var(--brand-primary) !important;
+        background: transparent !important;
+    }
 
-        .table-hover tbody tr:hover {
-            background: rgba(102, 126, 234, 0.05);
-        }
+    .btn-outline-primary:hover {
+        background-color: rgba(145, 70, 255, 0.05) !important;
+        color: var(--brand-primary-hover) !important;
+    }
 
-        /* User Panel */
-        .user-panel {
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
+    /* Table Redesign */
+    .table {
+        color: var(--brand-text-primary) !important;
+        background-color: transparent !important;
+    }
 
-        /* Footer */
-        .main-footer {
-            border-top: 1px solid var(--dnia-border);
-            background: #fff;
-        }
+    .table thead th {
+        background-color: var(--brand-surface) !important;
+        color: var(--brand-text-secondary) !important;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 0.05em;
+        border-bottom: 2px solid var(--brand-border) !important;
+        padding: 12px 16px !important;
+    }
 
-        /* Breadcrumb */
-        .breadcrumb {
-            background: transparent;
-            padding: 0;
-        }
+    .table td {
+        border-bottom: 1px solid var(--brand-border) !important;
+        padding: 12px 16px !important;
+        vertical-align: middle;
+    }
 
-        .breadcrumb-item.active {
-            color: var(--dnia-accent);
-        }
+    .table-hover tbody tr:hover {
+        background-color: rgba(145, 70, 255, 0.02) !important;
+    }
+
+    /* Forms Redesign */
+    .form-control {
+        background-color: #FFFFFF !important;
+        border: 1px solid var(--brand-border) !important;
+        border-radius: 4px !important;
+        color: var(--brand-text-primary) !important;
+        font-size: 13px !important;
+        padding: 8px 10px !important;
+    }
+
+    .form-control:focus {
+        border-color: var(--brand-primary) !important;
+        box-shadow: 0 0 0 2px rgba(145, 70, 255, 0.1) !important;
+    }
+
+    /* Badges Redesign */
+    .badge {
+        border-radius: 2px !important;
+        text-transform: uppercase;
+        font-weight: 700 !important;
+        font-size: 10px !important;
+        padding: 4px 8px !important;
+    }
+
+    .badge-primary {
+        background-color: var(--brand-primary) !important;
+    }
+
+    .badge-success {
+        background-color: var(--brand-success) !important;
+    }
+
+    .badge-warning {
+        background-color: var(--brand-warning) !important;
+        color: #000 !important;
+    }
+
+    .badge-danger {
+        background-color: var(--brand-error) !important;
+    }
+
+    /* User Panel */
+    .user-panel {
+        border-bottom: 1px solid var(--brand-border) !important;
+    }
+
+    .user-panel .info a {
+        color: var(--brand-text-primary) !important;
+        font-weight: 600;
+    }
+
+    .user-panel .image i {
+        color: var(--brand-primary) !important;
+    }
+
+    /* Footer */
+    .main-footer {
+        background-color: #FFFFFF !important;
+        border-top: 1px solid var(--brand-border) !important;
+        color: var(--brand-text-secondary) !important;
+        font-size: 12px;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb-item a {
+        color: var(--brand-primary) !important;
+        text-decoration: none;
+    }
+
+    .breadcrumb-item.active {
+        color: var(--brand-text-secondary) !important;
+    }
+
+    /* Modals Redesign */
+    .modal-content {
+        background-color: #FFFFFF !important;
+        border: 1px solid var(--brand-border) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .modal-header {
+        border-bottom: 1px solid var(--brand-border) !important;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--brand-border) !important;
+    }
     </style>
 
     @stack('styles')
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fa fa-bars"></i></a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="{{ route('home') }}" target="_blank" class="nav-link">Lihat Website</a>
-            </li>
-        </ul>
+    <div class="wrapper">
+        <nav class="main-header navbar navbar-expand">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fa fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="{{ route('home') }}" target="_blank" class="nav-link">Lihat Website</a>
+                </li>
+            </ul>
 
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user-circle"></i> Admin
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a href="{{ route('admin.logout') }}" class="dropdown-item"
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fa fa-sign-out mr-2"></i> Logout
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user-circle"></i> Admin
                     </a>
-                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">@csrf</form>
-                </div>
-            </li>
-        </ul>
-    </nav>
-
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="{{ route('admin.dashboard') }}" class="brand-link text-center">
-            <span class="brand-text">Dnia Organizer</span>
-        </a>
-
-        <div class="sidebar">
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <i class="fa fa-user-circle fa-2x text-white"></i>
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block">Administrator</a>
-                </div>
-            </div>
-
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-                    <li class="nav-item">
-                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                            <i class="nav-icon fa fa-dashboard"></i>
-                            <p>Dashboard</p>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="{{ route('admin.logout') }}" class="dropdown-item"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fa fa-sign-out mr-2"></i> Logout
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.bookings.index') }}" class="nav-link {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">
-                            <i class="nav-icon fa fa-calendar-check-o"></i>
-                            <p>Booking Acara</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
-                            <i class="nav-icon fa fa-heart"></i>
-                            <p>Layanan</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.testimonials.index') }}" class="nav-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
-                            <i class="nav-icon fa fa-quote-right"></i>
-                            <p>Testimoni</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.terms.index') }}" class="nav-link {{ request()->routeIs('admin.terms.*') ? 'active' : '' }}">
-                            <i class="nav-icon fa fa-list-alt"></i>
-                            <p>Syarat & Ketentuan</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.packages.index') }}" class="nav-link {{ request()->routeIs('admin.packages.*') ? 'active' : '' }}">
-                            <i class="nav-icon fa fa-gift"></i>
-                            <p>Paket</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.payments.index') }}" class="nav-link {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
-                            <i class="nav-icon fa fa-credit-card"></i>
-                            <p>Pembayaran</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.galleries.index') }}" class="nav-link {{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}">
-                            <i class="nav-icon fa fa-image"></i>
-                            <p>Galeri</p>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </aside>
-
-    <div class="content-wrapper">
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>@yield('page_title', 'Dashboard')</h1>
+                        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">@csrf
+                        </form>
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Admin</a></li>
-                            <li class="breadcrumb-item active">@yield('page_title', 'Dashboard')</li>
-                        </ol>
+                </li>
+            </ul>
+        </nav>
+
+        <aside class="main-sidebar">
+            <a href="{{ route('admin.dashboard') }}" class="brand-link text-center">
+                <span class="brand-text">Dnia Organizer</span>
+            </a>
+
+            <div class="sidebar">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <i class="fa fa-user-circle fa-2x"></i>
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">Administrator</a>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <section class="content">
-            <div class="container-fluid">
-                @yield('content')
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-dashboard"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.bookings.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-calendar-check-o"></i>
+                                <p>Booking Acara</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.services.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-heart"></i>
+                                <p>Layanan</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.testimonials.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-quote-right"></i>
+                                <p>Testimoni</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.terms.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.terms.*') ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-list-alt"></i>
+                                <p>Syarat & Ketentuan</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.packages.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.packages.*') ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-gift"></i>
+                                <p>Paket</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.payments.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-credit-card"></i>
+                                <p>Pembayaran</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.galleries.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-image"></i>
+                                <p>Galeri</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-        </section>
+        </aside>
+
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>@yield('page_title', 'Dashboard')</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Admin</a></li>
+                                <li class="breadcrumb-item active">@yield('page_title', 'Dashboard')</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content">
+                <div class="container-fluid">
+                    @yield('content')
+                </div>
+            </section>
+        </div>
+
+        <footer class="main-footer">
+            <strong>&copy; {{ date('Y') }} Dnia Organizer.</strong> Admin Panel.
+            <div class="float-right d-none d-sm-inline-block">
+                Laravel 12 + AdminLTE 3
+            </div>
+        </footer>
     </div>
 
-    <footer class="main-footer">
-        <strong>&copy; {{ date('Y') }} Dnia Organizer.</strong> Admin Panel.
-        <div class="float-right d-none d-sm-inline-block">
-            Laravel 12 + AdminLTE 3
-        </div>
-    </footer>
-</div>
-
-@if(session('success'))
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="successModalLabel"><i class="fa fa-check-circle mr-1"></i> Berhasil</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {{ session('success') }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">Oke</button>
+    @if(session('success'))
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="successModalLabel"><i class="fa fa-check-circle mr-1"></i> Berhasil</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ session('success') }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Oke</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-@endif
+    @endif
 
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="confirmModalLabel"><i class="fa fa-exclamation-triangle mr-1"></i> Konfirmasi</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="confirmModalMessage">
-                Apakah data ini ingin dihapus?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-danger" id="confirmModalYes">Ya, Hapus</button>
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="confirmModalLabel"><i class="fa fa-exclamation-triangle mr-1"></i>
+                        Konfirmasi</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="confirmModalMessage">
+                    Apakah data ini ingin dihapus?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmModalYes">Ya, Hapus</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-gold-custom text-white">
-                <h5 class="modal-title" id="infoModalLabel"><i class="fa fa-info-circle mr-1"></i> Informasi</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="infoModalMessage"></div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-gold" data-dismiss="modal">Oke</button>
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-gold-custom text-white">
+                    <h5 class="modal-title" id="infoModalLabel"><i class="fa fa-info-circle mr-1"></i> Informasi</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="infoModalMessage"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-gold" data-dismiss="modal">Oke</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/overlayScrollbars@1.13.3/js/jquery.overlayScrollbars.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-<script>
-    $(function () {
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/overlayScrollbars@1.13.3/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <script>
+    $(function() {
         @if(session('success'))
-            $('#successModal').modal('show');
+        $('#successModal').modal('show');
         @endif
 
         let formToSubmit = null;
 
-        $(document).on('submit', 'form[data-confirm]', function (e) {
+        $(document).on('submit', 'form[data-confirm]', function(e) {
             e.preventDefault();
             formToSubmit = this;
             $('#confirmModalMessage').text($(this).data('confirm') || 'Apakah Anda yakin?');
             $('#confirmModal').modal('show');
         });
 
-        $('#confirmModalYes').on('click', function () {
+        $('#confirmModalYes').on('click', function() {
             if (formToSubmit) {
                 const form = formToSubmit;
                 formToSubmit = null;
@@ -413,7 +575,8 @@
         $('#infoModalMessage').html(String(message).replace(/\n/g, '<br>'));
         $('#infoModal').modal('show');
     }
-</script>
-@stack('scripts')
+    </script>
+    @stack('scripts')
 </body>
+
 </html>
